@@ -1,0 +1,60 @@
+server:
+  port: 5000
+
+spring:
+  application:
+    name: employee-service
+  datasource:
+    url: jdbc:h2:mem:example-app;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;TRACE_LEVEL_FIle=4
+    username: sa
+    password: h2
+    driverClassName: org.h2.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+    properties:
+      javax:
+        persistence:
+          sharedCache:
+            mode: ENABLE_SELECTIVE
+      hibernate:
+        show_sql: true
+        format_sql: true
+        use_sql_comments: true
+        cache:
+          use_query_cache: false
+          use_second_level_cache: true
+          hazelcast:
+            instance_name: pocServer01
+            # native_client_instance_name: pocClient01
+          region:
+            factory_class: com.hazelcast.hibernate.HazelcastCacheRegionFactory
+  h2:
+    console:
+      enabled: true
+      path: /console
+      settings:
+        trace: false
+        web-allow-others: false
+
+logging:
+  level:
+    com.hazelcast: INFO
+    org.hibernate: INFO
+
+
+hazelcast:
+  pocServer01:
+    instance_name: pocServer01
+    group_name: pocHazelcastCache01
+    port: 55100
+    # interfaces: 10.10.1.*, 10.3.10.4-18
+    # members: 10.10.1.2, 10.10.1.3
+    management_center_enabled: true
+    management_center_url: http://localhost:8080/hazelcast-mancenter
+    management_center_update_interval: 5
+  pocClient01:
+    instance_name: pocClient01
+    group_name: pocHazelcastCache01
+    server_address: 127.0.0.1:55100
