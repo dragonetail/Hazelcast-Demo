@@ -1,4 +1,4 @@
-package com.github.dragonetail.hazelcast.config;
+package org.hazelcast.poc.config;
 
 import com.hazelcast.core.HazelcastInstance;
 import org.springframework.beans.factory.annotation.Autowired;

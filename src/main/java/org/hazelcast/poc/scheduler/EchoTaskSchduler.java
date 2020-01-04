@@ -1,4 +1,4 @@
-package com.github.dragonetail.hazelcast.scheduler;
+package org.hazelcast.poc.scheduler;
 
 
 import com.hazelcast.scheduledexecutor.IScheduledExecutorService;
@@ -15,25 +15,25 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 @Component
 public class EchoTaskSchduler {
-    @Autowired
-    private EchoTask echoTask;
-
-    @Autowired
-    private IScheduledExecutorService scheduledExecutorService;
-
-    private IScheduledFuture<?> scheduledFuture;
-
-    @PostConstruct
-    public void init() {
-        scheduledFuture= scheduledExecutorService.scheduleAtFixedRate(
-                TaskUtils.named("echoTask", echoTask), 10, 30, TimeUnit.SECONDS);
-        log.info("EchoTask has been started.");
-    }
-
-    @PreDestroy
-    public void shutdown() {
-        scheduledFuture.cancel(true);
-        scheduledFuture.dispose();
-        log.info("EchoTask has been shutdown.");
-    }
+//    @Autowired
+//    private EchoTask echoTask;
+//
+//    @Autowired
+//    private IScheduledExecutorService scheduledExecutorService;
+//
+//    private IScheduledFuture<?> scheduledFuture;
+//
+//    @PostConstruct
+//    public void init() {
+//        scheduledFuture= scheduledExecutorService.scheduleAtFixedRate(
+//                TaskUtils.named("echoTask", echoTask), 10, 30, TimeUnit.SECONDS);
+//        log.info("EchoTask has been started.");
+//    }
+//
+//    @PreDestroy
+//    public void shutdown() {
+//        scheduledFuture.cancel(true);
+//        scheduledFuture.dispose();
+//        log.info("EchoTask has been shutdown.");
+//    }
 }

@@ -50,7 +50,7 @@ hazelcast:
     group_name: pocHazelcastCache01
     port: 55100
     # interfaces: 10.10.1.*, 10.3.10.4-18
-    # members: 10.10.1.2, 10.10.1.3
+    # members: 10.10.1.2:55100, 10.10.1.3:55100
     management_center_enabled: true
     management_center_url: http://localhost:8080/hazelcast-mancenter
     management_center_update_interval: 5

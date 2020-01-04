@@ -1,82 +1,82 @@
 package org.hazelcast.poc.service;
 
 
-import org.hazelcast.poc.model.Employee;
-import org.hazelcast.poc.repository.EmployeeRepository;
-import com.hazelcast.core.IMap;
-import com.hazelcast.query.Predicate;
-import com.hazelcast.query.Predicates;
+import com.hazelcast.flakeidgen.FlakeIdGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.DigestUtils;
 
-import javax.annotation.PostConstruct;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import java.security.SecureRandom;
+import java.util.Random;
 
 @Slf4j
 @Service
-public class EmployeeService {
+public class IdGeneratorPocService {
     @Autowired
-    private EmployeeRepository employeeRepository;
-    @Autowired
-    private IMap<Integer, Employee> employeeCacheMap;
+    private FlakeIdGenerator pocFlakeIdGenerator01;
 
-    @PostConstruct
-    public void init() {
-        log.info("Employees cache: " + employeeCacheMap.size());
+
+    /**
+     * 生成伪顺序长整数唯一序列，常用业务ID使用。
+     */
+    public long generate() {
+        return pocFlakeIdGenerator01.newId();
     }
 
-    public Employee findByPersonId(Integer personId) {
-        Predicate predicate = Predicates.equal("personId", personId);
-        log.info("Employee cache find by personId");
-        Collection<Employee> collection = employeeCacheMap.values(predicate);
-        log.info("Employee cached: " + collection);
-        Optional<Employee> optionalEmployee = collection.stream().findFirst();
-        if (optionalEmployee.isPresent())
-            return optionalEmployee.get();
+    // 0 -- 9, A -- Z
+    //为了分辨度，    去掉了79:O, 73:I
+    protected static final char[] CHAR_TABLE = new char[]{48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 65, 66, 67, 68, 69,
+            70, 71, 72, 74, 75, 76, 77, 78, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90};
+    protected static final int CHAR_TABLE_SIZE = CHAR_TABLE.length;
 
-
-        log.info("Employee db find by personId");
-        Employee employee = employeeRepository.findByPersonId(personId);
-        log.info("Employee: " + employee);
-        employeeCacheMap.put(employee.getId(), employee);
-        return employee;
+    /**
+     * 生成伪乱序唯一代码，常用作业务代码、编码使用，同时考虑HBase等数据分区。
+     */
+    public String generateCode() {
+        return generateCode(null);
     }
 
-    public List<Employee> findByCompany(String company) {
-        Predicate predicate = Predicates.equal("company", company);
-        log.info("Employees cache find by company");
-        Collection<Employee> collection = employeeCacheMap.values(predicate);
-        log.info("Employees cache size: " + collection.size());
-        if (collection.size() > 0) {
-            return collection.stream().collect(Collectors.toList());
+    public String generateCode(String prefix) {
+        long number = this.generate();
+
+        final StringBuilder sb = new StringBuilder();
+
+        while (number > 0) {
+            int mod = (int) (number % CHAR_TABLE_SIZE);
+            sb.append(CHAR_TABLE[mod]);
+            if (mod == 0) {
+                mod = CHAR_TABLE_SIZE;
+            }
+            number = (number - mod) / CHAR_TABLE_SIZE;
         }
 
-
-        log.info("Employees db find by company");
-        List<Employee> employees = employeeRepository.findByCompany(company);
-        log.info("Employees size: " + employees.size());
-        employees.parallelStream().forEach(it -> employeeCacheMap.putIfAbsent(it.getId(), it));
-        return employees;
+//        sb.reverse();
+//        loopMove(sb);
+//        loopMove(sb);
+        if (prefix != null) {
+            return prefix + sb.toString();
+        } else {
+            return sb.toString();
+        }
     }
 
-    public Employee findById(Integer id) {
-        Employee employee = employeeCacheMap.get(id);
-        if (employee != null)
-            return employee;
+//    private void loopMove(StringBuilder sb) {
+//        int pos = sb.length() - 1;
+//        char ch = sb.charAt(pos);
+//        sb.deleteCharAt(pos);
+//        sb.insert(0, ch);
+//    }
 
-        employee = employeeRepository.findById(id).orElseThrow(() -> new RuntimeException("Employee not found: " + id));
-        employeeCacheMap.put(id, employee);
-        return employee;
+    /**
+     * 生成随机HEX数，常用做Token。
+     */
+    private static final Random RANDOM = new SecureRandom();
+
+    public String generateNonceToken() {
+        final String code = this.generateCode() + RANDOM.nextLong();
+        return DigestUtils.md5DigestAsHex(code.getBytes());
     }
 
-    public Employee save(Employee employee) {
-        employee = employeeRepository.save(employee);
-        employeeCacheMap.put(employee.getId(), employee);
-        return employee;
-    }
 
 }

@@ -1,7 +1,7 @@
-package com.github.dragonetail.hazelcast.store;
+package org.hazelcast.poc.store;
 
-import com.github.dragonetail.hazelcast.model.QueuePocTask;
-import com.github.dragonetail.hazelcast.repository.QueueTaskRepository;
+import org.hazelcast.poc.model.QueuePocTask;
+import org.hazelcast.poc.repository.QueueTaskRepository;
 import com.hazelcast.core.QueueStore;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

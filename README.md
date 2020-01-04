@@ -17,23 +17,23 @@ https://www.baeldung.com/java-hazelcast
 
 # 追加Hazelcast的依赖
 ```xml
-    <dependency> <!-- Hazelcat核心包依赖 -->
-			<groupId>com.hazelcast</groupId>
-			<artifactId>hazelcast</artifactId>
-		</dependency>
-		<dependency> <!-- Hazelcat客户端包依赖 -->
-			<groupId>com.hazelcast</groupId>
-			<artifactId>hazelcast-client</artifactId>
-		</dependency>
-		<dependency> <!-- Hazelcat同Spring集成包依赖 -->
-			<groupId>com.hazelcast</groupId>
-			<artifactId>hazelcast-spring</artifactId>
-		</dependency>
-		<dependency> <!-- Hazelcat支持Hibernate包依赖 -->
-			<groupId>com.hazelcast</groupId>
-			<artifactId>hazelcast-hibernate53</artifactId>
-			<version>1.3.2</version>
-		</dependency>
+<dependency> <!-- Hazelcat核心包依赖 -->
+  <groupId>com.hazelcast</groupId>
+  <artifactId>hazelcast</artifactId>
+</dependency>
+<dependency> <!-- Hazelcat客户端包依赖 -->
+  <groupId>com.hazelcast</groupId>
+  <artifactId>hazelcast-client</artifactId>
+</dependency>
+<dependency> <!-- Hazelcat同Spring集成包依赖 -->
+  <groupId>com.hazelcast</groupId>
+  <artifactId>hazelcast-spring</artifactId>
+</dependency>
+<dependency> <!-- Hazelcat支持Hibernate包依赖 -->
+  <groupId>com.hazelcast</groupId>
+  <artifactId>hazelcast-hibernate53</artifactId>
+  <version>1.3.2</version>
+</dependency>
 ```
 
 # 配置Hazelcast管理中心
@@ -258,7 +258,7 @@ public class HazelcastClientConfiguration {
 
 
 
-4、Spring缓存集成，参见SpringCachePocController。
+4、****** Spring缓存集成，参见SpringCachePocController。
 
 访问[spring-cache-poc-controller](http://localhost:5000/swagger-ui.html#/spring-cache-poc-controller)的getTime和clear接口，可以操作缓存中的数据。
 
@@ -330,6 +330,12 @@ https://github.com/hazelcast/hazelcast-hibernate/blob/master/README.md
 7、ID生成，参见IdGeneratorController。
 
 Hazelcast提供了用时间、节点、序列在集群上提供全局唯一ID的实现，能够实现基本有序的序列，序列中会跳号。
+
+相关提供了：
+
+- generate： 生成全局Long的ID。伪顺序长整数唯一序列，常用业务ID使用
+- generateCode： 根据全局Long的ID，生成伪乱序编码（目前为12字符），常用作业务代码、编码使用，已考虑HBase等数据分区。
+- generateNonceToken： 根据随机函数生成一次性Token码（32字符），常用做Token。
 
 
 
@@ -464,10 +470,34 @@ public class EchoTaskSchduler {
 
 
 
-10、其他说明，以上所有测试可以配合使用http://localhost:5000/console进行数据库确认，另外，日志中数据库SQL日志已经打开。
+10、其他说明，以上所有测试可以配合使用[http://localhost:5000/console ](http://localhost:5000/console )进行数据库确认，另外，日志中数据库SQL日志已经打开。
 
 
 
+11、测试多节点启动
+```
+java -Dhazelcast.pocServer01.port=55100 \
+ -Dhazelcast.pocServer01.members=127.0.0.1:55100,127.0.0.1:55101,127.0.0.1:55102,127.0.0.1:55103,127.0.0.1:55104 \
+ -jar target/Hazelcast-Demo-0.0.1-SNAPSHOT.jar
 
-
+java -Dhazelcast.pocServer01.port=55101 \
+    -Dserver.port=8081 \
+ -Dhazelcast.pocServer01.members=127.0.0.1:55100,127.0.0.1:55101,127.0.0.1:55102,127.0.0.1:55103,127.0.0.1:55104 \
+ -jar target/Hazelcast-Demo-0.0.1-SNAPSHOT.jar
+ 
+ java -Dhazelcast.pocServer01.port=55102 \
+    -Dserver.port=8082 \
+  -Dhazelcast.pocServer01.members=127.0.0.1:55100,127.0.0.1:55101,127.0.0.1:55102,127.0.0.1:55103,127.0.0.1:55104 \
+  -jar target/Hazelcast-Demo-0.0.1-SNAPSHOT.jar
+  
+ java -Dhazelcast.pocServer01.port=55103 \
+    -Dserver.port=8083 \
+  -Dhazelcast.pocServer01.members=127.0.0.1:55100,127.0.0.1:55101,127.0.0.1:55102,127.0.0.1:55103,127.0.0.1:55104 \
+  -jar target/Hazelcast-Demo-0.0.1-SNAPSHOT.jar
+  
+ java -Dhazelcast.pocServer01.port=55104 \
+    -Dserver.port=8084 \
+  -Dhazelcast.pocServer01.members=127.0.0.1:55100,127.0.0.1:55101,127.0.0.1:55102,127.0.0.1:55103,127.0.0.1:55104 \
+  -jar target/Hazelcast-Demo-0.0.1-SNAPSHOT.jar
+```
 

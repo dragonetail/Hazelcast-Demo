@@ -1,14 +1,13 @@
-package com.github.dragonetail.hazelcast.store;
+package org.hazelcast.poc.store;
 
-import com.github.dragonetail.hazelcast.model.DeviceStatus;
-import com.github.dragonetail.hazelcast.repository.DeviceStatusRepository;
+import org.hazelcast.poc.model.DeviceStatus;
+import org.hazelcast.poc.repository.DeviceStatusRepository;
 import com.hazelcast.core.MapStoreAdapter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;

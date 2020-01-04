@@ -1,21 +1,25 @@
-package com.github.dragonetail.hazelcast.controller;
+package org.hazelcast.poc.controller;
 
 
-import com.github.dragonetail.hazelcast.model.Employee;
-import com.github.dragonetail.hazelcast.model.Person;
-import com.github.dragonetail.hazelcast.repository.PersonRepository;
-import com.github.dragonetail.hazelcast.service.EmployeeService;
+import com.hazelcast.core.IMap;
+import lombok.extern.slf4j.Slf4j;
+import org.hazelcast.poc.model.Employee;
+import org.hazelcast.poc.model.Person;
+import org.hazelcast.poc.repository.PersonRepository;
+import org.hazelcast.poc.service.EmployeeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Random;
 import java.util.logging.Logger;
 
+@Slf4j
 @Api(tags = "员工实体操作接口，通过Service操作IMap接口实现缓存访问和控制")
 @RestController
 @RequestMapping("/employees")
@@ -35,7 +39,9 @@ public class EmployeeController {
     @GetMapping("/person/{id}")
     public Employee findByPersonId(@PathVariable("id") Integer personId) {
         logger.info(String.format("findByPersonId(%d)", personId));
-        return service.findByPersonId(personId);
+
+        Employee employee = service.findByPersonId(personId);
+        return employee;
     }
 
     @ApiOperation("通过公司查找员工，使用公司字段索引")

@@ -1,8 +1,8 @@
-package com.github.dragonetail.hazelcast.service;
+package org.hazelcast.poc.service;
 
 
-import com.github.dragonetail.hazelcast.model.Employee;
-import com.github.dragonetail.hazelcast.repository.EmployeeRepository;
+import org.hazelcast.poc.model.Employee;
+import org.hazelcast.poc.repository.EmployeeRepository;
 import com.hazelcast.core.IMap;
 import com.hazelcast.query.Predicate;
 import com.hazelcast.query.Predicates;
@@ -23,6 +23,9 @@ public class EmployeeService {
     private EmployeeRepository employeeRepository;
     @Autowired
     private IMap<Integer, Employee> employeeCacheMap;
+    @Autowired
+    private IMap<Integer, Employee> employees;
+
 
     @PostConstruct
     public void init() {
@@ -30,17 +33,22 @@ public class EmployeeService {
     }
 
     public Employee findByPersonId(Integer personId) {
-        Predicate predicate = Predicates.equal("personId", personId);
-        log.info("Employee cache find by personId");
-        Collection<Employee> collection = employeeCacheMap.values(predicate);
-        log.info("Employee cached: " + collection);
-        Optional<Employee> optionalEmployee = collection.stream().findFirst();
-        if (optionalEmployee.isPresent())
-            return optionalEmployee.get();
+//        Predicate predicate = Predicates.equal("personId", personId);
+//        log.info("Employee cache find by personId");
+//        Collection<Employee> collection = employeeCacheMap.values(predicate);
+//        log.info("Employee cached: " + collection);
+//        Optional<Employee> optionalEmployee = collection.stream().findFirst();
+//        if (optionalEmployee.isPresent()) {
+//            return optionalEmployee.get();
+//        }
 
 
         log.info("Employee db find by personId");
+
+        log.info("Before repository: " + employees.size() + " " + employees.get(personId));
         Employee employee = employeeRepository.findByPersonId(personId);
+        log.info("After repository: " + employees.size() + " " + employees.get(personId));
+
         log.info("Employee: " + employee);
         employeeCacheMap.put(employee.getId(), employee);
         return employee;
@@ -65,8 +73,9 @@ public class EmployeeService {
 
     public Employee findById(Integer id) {
         Employee employee = employeeCacheMap.get(id);
-        if (employee != null)
+        if (employee != null) {
             return employee;
+        }
 
         employee = employeeRepository.findById(id).orElseThrow(() -> new RuntimeException("Employee not found: " + id));
         employeeCacheMap.put(id, employee);

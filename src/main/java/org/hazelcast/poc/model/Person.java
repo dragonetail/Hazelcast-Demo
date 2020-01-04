@@ -1,4 +1,4 @@
-package com.github.dragonetail.hazelcast.model;
+package org.hazelcast.poc.model;
 
 import lombok.Data;
 import org.hibernate.annotations.Cache;

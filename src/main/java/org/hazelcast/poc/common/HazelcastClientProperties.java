@@ -1,4 +1,4 @@
-package com.github.dragonetail.hazelcast.common.hazelcast;
+package org.hazelcast.poc.common;
 
 import com.hazelcast.client.config.ClientNetworkConfig;
 import lombok.Getter;

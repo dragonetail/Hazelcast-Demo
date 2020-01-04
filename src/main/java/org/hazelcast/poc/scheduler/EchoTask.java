@@ -1,4 +1,4 @@
-package com.github.dragonetail.hazelcast.scheduler;
+package org.hazelcast.poc.scheduler;
 
 import com.hazelcast.core.IAtomicLong;
 import lombok.extern.slf4j.Slf4j;
@@ -9,7 +9,7 @@ import java.io.Serializable;
 
 @Slf4j
 @Component
-public class EchoTask implements Runnable, Serializable {
+public class EchoTask implements Runnable {
 
     @Autowired
     private IAtomicLong pocCounter01;

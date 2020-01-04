@@ -21,3 +21,21 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
+*.iml
+**/targetJar/*
+*.project
+*.classpath
+*.settings
+**.log
+*.idea
+*.scannerwork
+
+**.DS_Store
+**.gz
+**.factorypath
+
+target
+08 SpringBase/.DS_Store
+
+

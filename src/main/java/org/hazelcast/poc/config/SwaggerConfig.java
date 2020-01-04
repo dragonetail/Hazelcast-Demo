@@ -1,4 +1,4 @@
-package com.github.dragonetail.hazelcast.config;
+package org.hazelcast.poc.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,7 +27,7 @@ public class SwaggerConfig {
                         "Hazelcast缓存及相关功能验证。",
                         "API V1.0",
                         "无",
-                        new Contact("微笑卡卡西", "https://www.google.com", "kakaxi@gmail.com"),
+                        new Contact("无", "https://www.google.com", "kakaxi@gmail.com"),
                         "Apache", "http://www.apache.org/", Collections.emptyList())
                 );
 

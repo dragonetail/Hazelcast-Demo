@@ -1,6 +1,6 @@
-package com.github.dragonetail.hazelcast.repository;
+package org.hazelcast.poc.repository;
 
-import com.github.dragonetail.hazelcast.model.QueuePocTask;
+import org.hazelcast.poc.model.QueuePocTask;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 

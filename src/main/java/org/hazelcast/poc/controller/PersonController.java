@@ -1,7 +1,7 @@
-package com.github.dragonetail.hazelcast.controller;
+package org.hazelcast.poc.controller;
 
-import com.github.dragonetail.hazelcast.model.Person;
-import com.github.dragonetail.hazelcast.repository.PersonRepository;
+import org.hazelcast.poc.model.Person;
+import org.hazelcast.poc.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
 import org.springframework.web.bind.annotation.GetMapping;

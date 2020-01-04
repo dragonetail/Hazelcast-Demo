@@ -1,6 +1,6 @@
-package com.github.dragonetail.hazelcast.controller;
+package org.hazelcast.poc.controller;
 
-import com.github.dragonetail.hazelcast.model.QueuePocTask;
+import org.hazelcast.poc.model.QueuePocTask;
 import com.hazelcast.core.IQueue;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

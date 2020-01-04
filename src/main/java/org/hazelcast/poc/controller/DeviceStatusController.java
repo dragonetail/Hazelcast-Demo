@@ -1,6 +1,6 @@
-package com.github.dragonetail.hazelcast.controller;
+package org.hazelcast.poc.controller;
 
-import com.github.dragonetail.hazelcast.model.DeviceStatus;
+import org.hazelcast.poc.model.DeviceStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

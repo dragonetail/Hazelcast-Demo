@@ -1,6 +1,6 @@
-package com.github.dragonetail.hazelcast.config;
+package org.hazelcast.poc.config;
 
-import com.github.dragonetail.hazelcast.common.hazelcast.HazelcastClientProperties;
+import org.hazelcast.poc.common.HazelcastClientProperties;
 import com.hazelcast.client.HazelcastClient;
 import com.hazelcast.client.config.ClientConfig;
 import com.hazelcast.core.HazelcastInstance;

@@ -1,6 +1,6 @@
-package com.github.dragonetail.hazelcast.repository;
+package org.hazelcast.poc.repository;
 
-import com.github.dragonetail.hazelcast.model.Person;
+import org.hazelcast.poc.model.Person;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,7 +1,7 @@
-package com.github.dragonetail.hazelcast.config;
+package org.hazelcast.poc.config;
 
-import com.github.dragonetail.hazelcast.common.hazelcast.HazelcastClientProperties;
-import com.github.dragonetail.hazelcast.common.hazelcast.HazelcastServerProperties;
+import org.hazelcast.poc.common.HazelcastClientProperties;
+import org.hazelcast.poc.common.HazelcastServerProperties;
 import lombok.Getter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;

@@ -1,4 +1,4 @@
-package com.github.dragonetail.hazelcast.common.hazelcast;
+package org.hazelcast.poc.common;
 
 import com.hazelcast.config.InterfacesConfig;
 import com.hazelcast.config.NetworkConfig;

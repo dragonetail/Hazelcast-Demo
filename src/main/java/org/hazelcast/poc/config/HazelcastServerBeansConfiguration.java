@@ -1,10 +1,10 @@
-package com.github.dragonetail.hazelcast.config;
+package org.hazelcast.poc.config;
 
-import com.github.dragonetail.hazelcast.model.DeviceStatus;
-import com.github.dragonetail.hazelcast.model.Employee;
-import com.github.dragonetail.hazelcast.model.QueuePocTask;
-import com.github.dragonetail.hazelcast.store.DeviceStatusMapStore;
-import com.github.dragonetail.hazelcast.store.QueueTaskQueueStore;
+import org.hazelcast.poc.model.DeviceStatus;
+import org.hazelcast.poc.model.Employee;
+import org.hazelcast.poc.model.QueuePocTask;
+import org.hazelcast.poc.store.DeviceStatusMapStore;
+import org.hazelcast.poc.store.QueueTaskQueueStore;
 import com.hazelcast.config.*;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IAtomicLong;
@@ -74,6 +74,21 @@ public class HazelcastServerBeansConfiguration {
         
         // Hibernate second 2 cache for Employee
         String name = "pocServer01.employee";
+        config.getMapConfig(name)
+                .setTimeToLiveSeconds(3600)
+                .setMaxIdleSeconds(3600); // 1小时
+
+        IMap<Integer, Employee> employeeCacheMap = hazelcastInstance.getMap(name);
+        employeeCacheMap.addIndex("company", true);
+        return employeeCacheMap;
+    }
+
+    @Bean(name = "employees")
+    public IMap<Integer, Employee> employees() {
+        Config config = hazelcastInstance.getConfig();
+
+        // Hibernate second 2 cache for Employee
+        String name = "pocServer01.employees";
         config.getMapConfig(name)
                 .setTimeToLiveSeconds(3600)
                 .setMaxIdleSeconds(3600); // 1小时
